@@ -1,11 +1,13 @@
 using UnityEngine;
 using Zenject;
 
-public class ProjectInstaller : MonoInstaller
+public class ProjectInstaller : MonoInstaller, ICoroutineRunner
 {
     [SerializeField] private LoadingCurtain loadingCurtainPrefab;
     public override void InstallBindings()
     {
+        Container.Bind<IConfigDataService>().To<ConfigDataService>().AsSingle();
+        Container.Bind<ICoroutineRunner>().FromInstance(this).AsSingle();
         Container.Bind<IDIService>().To<DIService>().AsSingle();
         Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
 
@@ -14,7 +16,9 @@ public class ProjectInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
 
+        BindSignalBus();
         BindGameStateMachine();
+        BindUpgradeSystem();
         BindSaveLoadService();
     }
 
@@ -29,8 +33,24 @@ public class ProjectInstaller : MonoInstaller
     private void BindGameStateMachine()
     {
         Container.Bind<IStateFactory>().To<StateFactory>().AsSingle();
-        Container.Bind<IGameStateMachine>().To<GameStateMachine>().AsSingle();
+        Container.BindInterfacesAndSelfTo<GameStateMachine>().AsSingle();
         Container.BindInterfacesAndSelfTo<BootstrapState>().AsSingle();
         Container.BindInterfacesAndSelfTo<LoadLevelState>().AsSingle();
+        Container.BindInterfacesAndSelfTo<LevelLoopState>().AsSingle();
+    }
+
+    private void BindSignalBus()
+    {
+        SignalBusInstaller.Install(Container);
+        Container.Bind<IEventBus>().To<ZenjectEventBus>().AsSingle().NonLazy();
+        Container.DeclareSignal<UpgradeSignal>();
+        //Container.DeclareSignal<PauseSignal>();
+    }
+
+    private void BindUpgradeSystem()
+    {
+        Container.BindInterfacesAndSelfTo<UpgradeSystem>().AsSingle();
+        Container.Bind<IUpgradeFactory>().To<UpgradeFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<LevelUpWindowPresenter>().AsSingle();
     }
 }

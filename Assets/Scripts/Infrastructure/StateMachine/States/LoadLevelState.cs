@@ -1,19 +1,23 @@
 public class LoadLevelState : IPayloadedState<int>
 {
     private readonly ISceneLoader sceneLoader;
-    private readonly ILoadingCurtain curtain;
+    private readonly IGameStateMachine stateMachine;
 
     public LoadLevelState(ISceneLoader _sceneLoader,
-      ILoadingCurtain _curtain)
+      IGameStateMachine stateMachine)
     {
         sceneLoader = _sceneLoader;
-        curtain = _curtain;
+        this.stateMachine = stateMachine;
     }
 
     public void Enter(int sceneIndex)
     {
-        sceneLoader.LoadScene(sceneIndex);
-        curtain.Hide();
+        sceneLoader.LoadScene(sceneIndex, OnLoaded);
+    }
+
+    private void OnLoaded()
+    {
+        stateMachine.Enter<LevelLoopState>();
     }
 
     public void Exit() { }

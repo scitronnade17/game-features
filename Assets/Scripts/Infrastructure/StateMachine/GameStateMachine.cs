@@ -6,7 +6,7 @@ public interface IGameStateMachine
     void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>;
 }
 
-public class GameStateMachine : IGameStateMachine
+public class GameStateMachine : IGameStateMachine, ITickable
 {
     private readonly IStateFactory stateFactory;
     private IExitableState currentState;
@@ -26,6 +26,14 @@ public class GameStateMachine : IGameStateMachine
     {
         TState state = ChangeState<TState>();
         state.Enter(payload);
+    }
+
+    public void Tick()
+    {
+        if (currentState is IUpdatable updatable)
+        {
+            updatable.Tick();
+        }
     }
 
     private TState ChangeState<TState>() where TState : class, IExitableState

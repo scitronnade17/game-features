@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56012c321b0208845b56abb2bac18389, type: 3}
+  m_Name: Speed10
+  m_EditorClassIdentifier: 
+  CardId: 10
+  Amount: 10
+  Label: Speed 10%
+  Icon: {fileID: 21300000, guid: c9c7c4f2589710f4b8d6cdca39658156, type: 3}

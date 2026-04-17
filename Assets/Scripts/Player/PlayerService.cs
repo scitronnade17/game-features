@@ -1,5 +1,9 @@
+
+using UnityEngine;
+
 public interface IPlayerService
 {
+    PlayerFacade PlayerFacade { get; }
     void Register(PlayerFacade _playerFacade);
 }
 
