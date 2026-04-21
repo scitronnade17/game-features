@@ -6,7 +6,8 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
     [SerializeField] private LoadingCurtain loadingCurtainPrefab;
     public override void InstallBindings()
     {
-        Container.Bind<IConfigDataService>().To<ConfigDataService>().AsSingle();
+        Container.Bind<IConfigDataService>().To<ConfigDataService>().AsSingle().NonLazy();
+        Container.Bind<IInventoryActionAggregator>().To<InventoryActionAggregator>().AsSingle();
         Container.Bind<ICoroutineRunner>().FromInstance(this).AsSingle();
         Container.Bind<IDIService>().To<DIService>().AsSingle();
         Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
@@ -18,8 +19,8 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
 
         BindSignalBus();
         BindGameStateMachine();
-        BindUpgradeSystem();
         BindSaveLoadService();
+        BindUpgradeSystem();
     }
 
     private void BindSaveLoadService()
@@ -44,6 +45,8 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
         SignalBusInstaller.Install(Container);
         Container.Bind<IEventBus>().To<ZenjectEventBus>().AsSingle().NonLazy();
         Container.DeclareSignal<UpgradeSignal>();
+        Container.DeclareSignal<CreateItemSignal>();
+        Container.DeclareSignal<TryPickupItemSignal>();
         //Container.DeclareSignal<PauseSignal>();
     }
 
