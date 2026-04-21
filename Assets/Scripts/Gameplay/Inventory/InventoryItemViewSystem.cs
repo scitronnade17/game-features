@@ -39,6 +39,8 @@ public class InventoryItemViewSystem : IInitializable, IDisposable
 
         int newX = Mathf.RoundToInt(pos.x / inventory.CellSize.x);
         int newY = Mathf.RoundToInt(-pos.y / inventory.CellSize.y);
+
+        inventory.TryMoveItem(itemId, newX, newY);
     }
 
     public void Dispose()
