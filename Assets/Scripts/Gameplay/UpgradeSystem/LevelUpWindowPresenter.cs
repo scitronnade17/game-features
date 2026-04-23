@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Zenject;
 
 public interface ILevelUpWindowPresenter
 {
@@ -8,7 +9,7 @@ public interface ILevelUpWindowPresenter
     void Register(LevelUpWindow levelUpWindow);
 }
 
-public class LevelUpWindowPresenter : ILevelUpWindowPresenter, IDisposable
+public class LevelUpWindowPresenter : ILevelUpWindowPresenter, IInitializable, IDisposable
 {
     private readonly IUpgradeFactory upgradeFactory;
     private List<CardView> cards = new();
@@ -25,6 +26,11 @@ public class LevelUpWindowPresenter : ILevelUpWindowPresenter, IDisposable
     public void Register(LevelUpWindow _levelUpWindow)
     {
         levelUpWindow = _levelUpWindow;
+    }
+
+    public void Initialize()
+    {
+        Show();
     }
 
     public void Show()

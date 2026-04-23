@@ -5,11 +5,11 @@ public class ItemWorld : MonoBehaviour
 {
     [field: SerializeField] public int Count { get; private set; }
     private ItemId itemId;
-    private IEventBus eventBus;
+    private IInventoryBus eventBus;
     private bool isPickup;
 
     [Inject]
-    public void Construct(IEventBus _eventBus)
+    public void Construct(IInventoryBus _eventBus)
     {
         eventBus = _eventBus;
     }
@@ -19,7 +19,7 @@ public class ItemWorld : MonoBehaviour
         if (isPickup) return;
 
         isPickup = true;
-        eventBus.RaiseEvent(new TryPickupItemSignal(itemId, this, Count));
+        eventBus.TryInventoryPickupFromWorld(itemId, this.gameObject, Count);
     }
 
     public void SetKey(ItemId _itemId) =>

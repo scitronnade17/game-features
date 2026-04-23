@@ -5,24 +5,27 @@ using Zenject;
 
 public class InventoryItemViewSystem : IInitializable, IDisposable
 {
-    private readonly IInventoryActionAggregator eventAggregator;
+    private readonly IInventoryBus bus;
     private readonly IInventoryPanelService inventoryPanel;
     private readonly IInventoryService inventory;
+    private readonly IInventoryDropTargetResolver dropTargetResolver;
 
-    public InventoryItemViewSystem(IInventoryActionAggregator _eventAggregator,
+    public InventoryItemViewSystem(IInventoryBus _bus,
        IInventoryPanelService _inventoryPanel,
-       IInventoryService _inventory)
+       IInventoryService _inventory,
+       IInventoryDropTargetResolver _dropTargetResolver)
     {
-        eventAggregator = _eventAggregator;
+        bus = _bus;
         inventoryPanel = _inventoryPanel;
         inventory = _inventory;
+        dropTargetResolver = _dropTargetResolver;
     }
 
     public void Initialize()
     {
-        eventAggregator.OnBeginDrag += Begin;
-        eventAggregator.OnDrag += Drag;
-        eventAggregator.OnEndDrag += EndDrag;
+        bus.OnBeginDrag += Begin;
+        bus.OnDrag += Drag;
+        bus.OnEndDrag += EndDrag;
     }
 
     private void Begin(InventoryItemId itemId)
@@ -35,18 +38,36 @@ public class InventoryItemViewSystem : IInitializable, IDisposable
 
     private void EndDrag(InventoryItemId itemId, Vector2 gridPosition, PointerEventData eventData)
     {
-        Vector2 pos = gridPosition;
+        InventoryDropTargetResult dropResult = dropTargetResolver.Resolve(eventData);
 
-        int newX = Mathf.RoundToInt(pos.x / inventory.CellSize.x);
-        int newY = Mathf.RoundToInt(-pos.y / inventory.CellSize.y);
+        switch (dropResult.Type)
+        {
+            case InventoryDropTargetType.Craft:
+                {
+                    ICraftingDropTarget craftTarget = (ICraftingDropTarget)dropResult.Target;
+                    craftTarget.TryPut(itemId);
+                    inventoryPanel.UpdateItemViews();
+                    return;
+                }
 
-        inventory.TryMoveItem(itemId, newX, newY);
+            case InventoryDropTargetType.Inventory:
+                {
+                    inventory.TryMoveItem(itemId, gridPosition);
+                    return;
+                }
+
+            case InventoryDropTargetType.None:
+            default:
+                {
+                    break;
+                }
+        }
     }
 
     public void Dispose()
     {
-        eventAggregator.OnBeginDrag -= Begin;
-        eventAggregator.OnDrag -= Drag;
-        eventAggregator.OnEndDrag -= EndDrag;
+        bus.OnBeginDrag -= Begin;
+        bus.OnDrag -= Drag;
+        bus.OnEndDrag -= EndDrag;
     }
 }

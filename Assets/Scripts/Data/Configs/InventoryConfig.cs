@@ -7,4 +7,6 @@ public class InventoryConfig : ScriptableObject
     public int Height;
     public GameObject InventoryViewPrefab;
     public GameObject InventoryCellViewPrefab;
+    public GameObject IngridientSlotPrefab;
+    public GameObject CraftRecipeViewPrefab;
 }

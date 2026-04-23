@@ -35,11 +35,6 @@ public class SaveLoadService : ISaveLoadService
                 saveLoad.Load(progress.Progress);
             }
         }
-        else
-        {
-            Debug.Log("No data");
-        }
-
     }
 
 }

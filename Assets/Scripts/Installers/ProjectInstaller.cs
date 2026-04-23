@@ -7,7 +7,7 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
     public override void InstallBindings()
     {
         Container.Bind<IConfigDataService>().To<ConfigDataService>().AsSingle().NonLazy();
-        Container.Bind<IInventoryActionAggregator>().To<InventoryActionAggregator>().AsSingle();
+        Container.Bind<IInventoryBus>().To<InventoryBus>().AsSingle();
         Container.Bind<ICoroutineRunner>().FromInstance(this).AsSingle();
         Container.Bind<IDIService>().To<DIService>().AsSingle();
         Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
@@ -20,7 +20,6 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
         BindSignalBus();
         BindGameStateMachine();
         BindSaveLoadService();
-        BindUpgradeSystem();
     }
 
     private void BindSaveLoadService()
@@ -46,14 +45,6 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
         Container.Bind<IEventBus>().To<ZenjectEventBus>().AsSingle().NonLazy();
         Container.DeclareSignal<UpgradeSignal>();
         Container.DeclareSignal<CreateItemSignal>();
-        Container.DeclareSignal<TryPickupItemSignal>();
         //Container.DeclareSignal<PauseSignal>();
-    }
-
-    private void BindUpgradeSystem()
-    {
-        Container.BindInterfacesAndSelfTo<UpgradeSystem>().AsSingle();
-        Container.Bind<IUpgradeFactory>().To<UpgradeFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<LevelUpWindowPresenter>().AsSingle();
     }
 }

@@ -9,6 +9,8 @@ public interface IConfigDataService
     LevelUpCardConfig GetRandomCard();
     ItemConfig GetItemConfig(ItemId id);
     ItemConfig GetRandomItem();
+    CraftRecipeConfig GetRecipe(RecipeId id);
+    IReadOnlyDictionary<RecipeId, CraftRecipeConfig> GetAllRecipes();
     public InventoryConfig GetInventoryConfig();
 
 }
@@ -17,6 +19,7 @@ public class ConfigDataService : IConfigDataService
 {
     private Dictionary<CardUpgradeId, LevelUpCardConfig> cards = new();
     private Dictionary<ItemId, ItemConfig> items = new();
+    private Dictionary<RecipeId, CraftRecipeConfig> recipes = new();
 
     private InventoryConfig inventoryConfig;
 
@@ -24,10 +27,15 @@ public class ConfigDataService : IConfigDataService
     {
         cards = Resources.LoadAll<LevelUpCardConfig>("Configs/Cards")
             .ToDictionary(x => x.CardId, x => x);
+
         items = Resources.LoadAll<ItemConfig>("Configs/Items")
             .ToDictionary(x => x.ItemId, x => x);
+
         inventoryConfig = Resources.Load<InventoryConfig>("Configs/InventoryConfig");
-        Debug.Log(inventoryConfig);
+
+        recipes = Resources
+         .LoadAll<CraftRecipeConfig>("Configs/Recipes")
+         .ToDictionary(x => x.Id, x => x);
     }
 
     public LevelUpCardConfig GetLevelUpCardConfig(CardUpgradeId id) =>
@@ -53,6 +61,12 @@ public class ConfigDataService : IConfigDataService
         ItemConfig randomElement = items.ElementAt(index).Value;
         return randomElement;
     }
+    public CraftRecipeConfig GetRecipe(RecipeId id) =>
+     recipes.TryGetValue(id, out var config)
+        ? config
+        : null;
+
+    public IReadOnlyDictionary<RecipeId, CraftRecipeConfig> GetAllRecipes() => recipes;
 
     public InventoryConfig GetInventoryConfig() => inventoryConfig;
 }

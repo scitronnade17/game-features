@@ -12,6 +12,5 @@ public class BootInitializeSystem: IInitializable
     public void Initialize()
     {
         stateMachine.Enter<BootstrapState>();
-        Debug.Log("BootInitializeSystem Initialize");
     }
 }

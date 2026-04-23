@@ -17,6 +17,7 @@ public interface IInventoryService
 
     InventoryResult TryAddNewItem(ItemId itemId, int count, out InventoryItem addedItem);
     InventoryResult TryMoveItem(InventoryItemId id, int newX, int newY);
+    InventoryResult TryMoveItem(InventoryItemId id, Vector2 gridPosition);
     InventoryResult TryRemoveItem(InventoryItemId id, out InventoryItem removedItem);
     InventoryResult TryDropItem(InventoryItemId id, out DroppedItemDescriptor droppedItem);
 }
@@ -122,6 +123,15 @@ public sealed class InventoryService : IInventoryService
 
         return TryMergeItemIntoStack(id, moveItem, targetItem);
     }
+
+    public InventoryResult TryMoveItem(InventoryItemId id, Vector2 gridPosition)
+    {
+        int newX = Mathf.RoundToInt(gridPosition.x / CellSize.x);
+        int newY = Mathf.RoundToInt(-gridPosition.y / CellSize.y);
+
+        return TryMoveItem(id, newX, newY);
+    }
+
 
     public InventoryResult TryDropItem(InventoryItemId id, out DroppedItemDescriptor droppedItem)
     {

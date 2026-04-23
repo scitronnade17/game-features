@@ -24,12 +24,12 @@ public class InventoryItemView : MonoBehaviour,
 
     public InventoryItemId Id { get; private set; }
 
-    private IInventoryActionAggregator eventAggregator;
+    private IInventoryBus bus;
 
     [Inject]
-    public void Construct(IInventoryActionAggregator _eventAggregator)
+    public void Construct(IInventoryBus _eventAggregator)
     {
-        eventAggregator = _eventAggregator;
+        bus = _eventAggregator;
     }
 
     public void Setup(InventoryItemId _id,
@@ -93,24 +93,24 @@ public class InventoryItemView : MonoBehaviour,
         startPos = rect.anchoredPosition;
         transform.SetAsLastSibling();
 
-        eventAggregator.ItemBeginDrag(Id);
+        bus.ItemBeginDrag(Id);
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         rect.anchoredPosition += eventData.delta / canvasScaleFactor;
-        eventAggregator?.ItemDrag(Id, rect.anchoredPosition, eventData);
+        bus?.ItemDrag(Id, rect.anchoredPosition, eventData);
     }
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        eventAggregator?.ItemEndDrag(Id, rect.anchoredPosition, eventData);
+        bus?.ItemEndDrag(Id, rect.anchoredPosition, eventData);
         rect.anchoredPosition = startPos;
     }
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
-            eventAggregator.InventoryItemRightClick(Id);
+            bus.InventoryItemRightClick(Id);
     }
 }

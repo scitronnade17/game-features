@@ -16,4 +16,5 @@ MonoBehaviour:
   Height: 5
   InventoryViewPrefab: {fileID: 8002251024439525005, guid: ba822846b818ade40b631fd15ef95bbc, type: 3}
   InventoryCellViewPrefab: {fileID: 8641330746234244908, guid: b8bc9dff0ed37b946808cd836fc57d05, type: 3}
-  CellSize: {x: 40, y: 40}
+  IngridientSlotPrefab: {fileID: 9060631511549713970, guid: 21c9b3c064b21a544b912acb1d2ebce6, type: 3}
+  CraftRecipeViewPrefab: {fileID: 5053822952555019708, guid: 38649ab9086bb2740a47b7c032ca2c5d, type: 3}
