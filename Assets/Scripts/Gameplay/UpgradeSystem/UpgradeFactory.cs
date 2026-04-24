@@ -21,7 +21,7 @@ public class UpgradeFactory : IUpgradeFactory
     public CardView CreateRandomCard(Transform parent)
     {
         GameObject prefab = Resources.Load<GameObject>("Card");
-        LevelUpCardConfig config = configs.GetRandomCard();
+        UpgradeCardConfig config = configs.GetRandomCard();
 
         CardView card = instantiator.InstantiatePrefabForComponent<CardView>(prefab, parent);
         card.CardUpgadeId = config.CardId;

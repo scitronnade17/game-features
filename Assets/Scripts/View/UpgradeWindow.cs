@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class LevelUpWindow : MonoBehaviour
+public class UpgradeWindow : MonoBehaviour
 {
     private List<CardView> cards = new List<CardView>();
 
@@ -12,17 +12,22 @@ public class LevelUpWindow : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(ILevelUpWindowPresenter presenter)
+    public void Construct(IUpgradeWindowPresenter presenter)
     {
         presenter.Register(this);
     }
 
-    public void ShowLevelUpWindow()
+    public void CreateCard(CardView card)
+    {
+        cards.Add(card);
+    }
+
+    public void ShowUpgradeWindow()
     {
         gameObject.SetActive(true);
     }
 
-    public void CloseLevelUpWindow()
+    public void CloseUpgradeWindow()
     {
         DestroyCards();
         gameObject.SetActive(false);
@@ -32,7 +37,6 @@ public class LevelUpWindow : MonoBehaviour
     {
         for (int i = 0; i < cards.Count; i++)
             cards[i].DestroyCard();
-
         cards.Clear();
     }
 }

@@ -6,6 +6,6 @@ public class UpgradeSystemInstaller : Installer<UpgradeSystemInstaller>
     {
         Container.BindInterfacesAndSelfTo<UpgradeSystem>().AsSingle();
         Container.Bind<IUpgradeFactory>().To<UpgradeFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<LevelUpWindowPresenter>().AsSingle();
+        Container.BindInterfacesAndSelfTo<UpgradeWindowPresenter>().AsSingle();
     }
 }

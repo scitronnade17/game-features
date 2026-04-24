@@ -7,7 +7,7 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
     public override void InstallBindings()
     {
         Container.Bind<IConfigDataService>().To<ConfigDataService>().AsSingle().NonLazy();
-        Container.Bind<IInventoryBus>().To<InventoryBus>().AsSingle();
+        Container.Bind<ILocalTimeService>().To<LocalTimeService>().AsSingle();
         Container.Bind<ICoroutineRunner>().FromInstance(this).AsSingle();
         Container.Bind<IDIService>().To<DIService>().AsSingle();
         Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle();
@@ -27,13 +27,13 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
         Container.Bind<IProgressService>().To<ProgressService>().AsSingle();
         Container.Bind<ISaveLoadRegistry>().To<SaveLoadRegistry>().AsSingle();
         Container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerService>().AsSingle();
     }
 
     private void BindGameStateMachine()
     {
         Container.Bind<IStateFactory>().To<StateFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<GameStateMachine>().AsSingle();
+
         Container.BindInterfacesAndSelfTo<BootstrapState>().AsSingle();
         Container.BindInterfacesAndSelfTo<LoadLevelState>().AsSingle();
         Container.BindInterfacesAndSelfTo<LevelLoopState>().AsSingle();
@@ -43,8 +43,10 @@ public class ProjectInstaller : MonoInstaller, ICoroutineRunner
     {
         SignalBusInstaller.Install(Container);
         Container.Bind<IEventBus>().To<ZenjectEventBus>().AsSingle().NonLazy();
+
         Container.DeclareSignal<UpgradeSignal>();
         Container.DeclareSignal<CreateItemSignal>();
-        //Container.DeclareSignal<PauseSignal>();
+        Container.DeclareSignal<ChestOpenRewardSignal>();
+        //PauseSignal
     }
 }

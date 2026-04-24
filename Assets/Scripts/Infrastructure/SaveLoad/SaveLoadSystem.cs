@@ -12,7 +12,6 @@ public class SaveLoadSystem : IInitializable
     public void Initialize()
     {
         saveLoad.Load();
-        saveLoad.Save();
     }
-
 }
+

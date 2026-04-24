@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "InventoryConfig", menuName = "Configs/InventoryConfig")]
+[CreateAssetMenu(fileName = "InventoryConfig", menuName = "Configs/Inventory")]
 public class InventoryConfig : ScriptableObject
 {
     public int Width;

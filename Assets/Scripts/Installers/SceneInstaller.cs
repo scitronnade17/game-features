@@ -12,5 +12,7 @@ public class SceneInstaller : MonoInstaller
         InventorySystemInstaller.Install(Container);
         CraftSystemInstaller.Install(Container);
         UpgradeSystemInstaller.Install(Container);
+        ChestSystemInstaller.Install(Container);
+
     }
 }

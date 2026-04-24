@@ -17,7 +17,7 @@ public class UpgradeSystem : IDisposable
 
     public void Upgrade(UpgradeSignal signal)
     {
-        LevelUpCardConfig conf = config.GetLevelUpCardConfig(signal.UpgradeId);
+        UpgradeCardConfig conf = config.GetUpgradeCardConfig(signal.UpgradeId);
         if (signal.UpgradeId == CardUpgradeId.Health10)
         {
             playerService.PlayerFacade.PlayerHealth.UpgradeHealth(conf.Amount);

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using UnityEngine;
 
 public interface IProgressService
@@ -24,7 +25,9 @@ public class ProgressService: IProgressService
 
     public void SaveProgress()
     {
-        PlayerPrefs.SetString(ProgressKey, JsonUtility.ToJson(Progress));
+        var json = JsonConvert.SerializeObject(Progress);
+        PlayerPrefs.SetString(ProgressKey, json);
+        PlayerPrefs.Save();
     }
 
     public PlayerProgress LoadProgressOrInitNew()
@@ -39,7 +42,7 @@ public class ProgressService: IProgressService
         {
             Debug.Log("Data found!");
             HasLoadProgress = true;
-            Progress = JsonUtility.FromJson<PlayerProgress>(json);
+            Progress = JsonConvert.DeserializeObject<PlayerProgress>(json);
             return Progress;
         }
     }
