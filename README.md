@@ -1,5 +1,6 @@
 Various game features:
 - SaveLoad System
-- Upgrade Manager
 - Inventory and Crafting System
+- Real-time OpenChest System
+- Upgrade Manager
 
