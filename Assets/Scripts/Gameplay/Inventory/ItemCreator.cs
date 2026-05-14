@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 public interface IItemCreator
 {
@@ -18,15 +19,14 @@ public class ItemCreator : IItemCreator, IDisposable
         eventBus.Subscribe<CreateItemSignal>(CreateItem);
     }
 
-    public void CreateItem(CreateItemSignal signal)
+    public async void CreateItem(CreateItemSignal signal)
     {
         Vector3 createPos = new Vector3(0, 5, 0);
-        itemFactory.CreateRandomItem(createPos);
+        await itemFactory.CreateRandomItem(createPos);
     }
 
     public void Dispose()
     {
         eventBus.Unsubscribe<CreateItemSignal>(CreateItem);
     }
-
 }

@@ -4,6 +4,7 @@ public class InventoryInstaller : Installer<InventoryInstaller>
 {
     public override void InstallBindings()
     {
+        Container.Bind<IAssetProvider>().To<AssetProvider>().AsSingle();
         Container.Bind<IInventoryDropTargetResolver>().To<InventoryDropTargetResolver>().AsSingle();
         Container.Bind<IInventoryBus>().To<InventoryBus>().AsSingle();
         Container.Bind<IInventoryFactory>().To<InventoryFactory>().AsSingle();

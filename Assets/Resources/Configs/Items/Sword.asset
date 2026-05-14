@@ -18,5 +18,9 @@ MonoBehaviour:
   MaxStack: 1
   Width: 2
   Height: 2
-  Prefab: {fileID: 3971935752414376688, guid: 120947fc79e9cab4cb24c37505ddde18, type: 3}
+  Prefab:
+    m_AssetGUID: 120947fc79e9cab4cb24c37505ddde18
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   Icon: {fileID: 21300000, guid: 092adda1314fa314b8e235526440bbc3, type: 3}
